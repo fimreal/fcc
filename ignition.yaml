@@ -26,9 +26,21 @@ storage:
           # Raise console message logging level from DEBUG (7) to WARNING (4)
           # to hide audit messages from the interactive console
           kernel.printk=4
-    - path: /etc/profile.d/systemd-pager.sh
+  # - path: /etc/profile.d/systemd-pager.sh
+  #   mode: 0644
+  #   contents:
+  #     inline: |
+  #       # Tell systemd to not use a pager when printing information
+  #       export SYSTEMD_PAGER=cat
+    - path: /etc/ssh/sshd_config.d/99-sshd.conf
       mode: 0644
       contents:
         inline: |
-          # Tell systemd to not use a pager when printing information
-          export SYSTEMD_PAGER=cat
+          ClientAliveInterval 180
+          #PasswordAuthentication yes
+    - path: /etc/NetworkManager/conf.d/no-dns.conf
+      mode: 0644
+      contents:
+        inline: |
+          [main]
+          dns=none

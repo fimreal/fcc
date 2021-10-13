@@ -25,25 +25,32 @@
   "storage": {
     "files": [
       {
-        "path": "/etc/hostname",
         "contents": {
           "source": "data:,fcos%0A"
         },
-        "mode": 420
+        "mode": 420,
+        "path": "/etc/hostname"
       },
       {
-        "path": "/etc/sysctl.d/20-silence-audit.conf",
         "contents": {
           "source": "data:,%23%20Raise%20console%20message%20logging%20level%20from%20DEBUG%20(7)%20to%20WARNING%20(4)%0A%23%20to%20hide%20audit%20messages%20from%20the%20interactive%20console%0Akernel.printk%3D4%0A"
         },
-        "mode": 420
+        "mode": 420,
+        "path": "/etc/sysctl.d/20-silence-audit.conf"
       },
       {
-        "path": "/etc/profile.d/systemd-pager.sh",
         "contents": {
-          "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
+          "source": "data:,ClientAliveInterval%20180%0A%23PasswordAuthentication%20yes%0A"
         },
-        "mode": 420
+        "mode": 420,
+        "path": "/etc/ssh/sshd_config.d/99-sshd.conf"
+      },
+      {
+        "contents": {
+          "source": "data:,%5Bmain%5D%0Adns%3Dnone"
+        },
+        "mode": 420,
+        "path": "/etc/NetworkManager/conf.d/no-dns.conf"
       }
     ]
   }
