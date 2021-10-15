@@ -44,3 +44,6 @@ storage:
         inline: |
           [main]
           dns=none
+  links:
+    - path: /etc/localtime
+      target: ../usr/share/zoneinfo/Asia/Shanghai

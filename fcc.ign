@@ -47,10 +47,16 @@
       },
       {
         "contents": {
-          "source": "data:,%5Bmain%5D%0Adns%3Dnone"
+          "source": "data:,%5Bmain%5D%0Adns%3Dnone%0A"
         },
         "mode": 420,
         "path": "/etc/NetworkManager/conf.d/no-dns.conf"
+      }
+    ],
+    "links": [
+      {
+        "path": "/etc/localtime",
+        "target": "../usr/share/zoneinfo/Asia/Shanghai"
       }
     ]
   }
