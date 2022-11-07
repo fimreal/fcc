@@ -11,7 +11,8 @@ passwd:
       shell: /bin/bash
     - name: root
       ssh_authorized_keys:
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC9vGVRRdJX8D0SxGW5FcgKIkVUpza4ZOJ51PvXomLln"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDBTed9KFiRw30p42s/PXgUHzguu5IwhYcapiwQm0RfV"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGj+52psmR65lVP9FkxWvTZSUlDZllhAhzeP9na7HadX"
 storage:
   files:
     - path: /etc/hostname
@@ -26,6 +27,17 @@ storage:
           # Raise console message logging level from DEBUG (7) to WARNING (4)
           # to hide audit messages from the interactive console
           kernel.printk=4
+    - path: /etc/sysctl.d/90-ipv4-ip-forward.conf
+      mode: 0644
+      contents:
+        inline: |
+          net.ipv4.ip_forward = 1
+
+    - path: /etc/sysctl.d/90-ipv6-ip-forwarding.conf
+      mode: 0644
+      contents:
+        inline: |
+          net.ipv6.conf.all.forwarding = 1
   # - path: /etc/profile.d/systemd-pager.sh
   #   mode: 0644
   #   contents:
@@ -36,8 +48,9 @@ storage:
       mode: 0644
       contents:
         inline: |
+          Port 1231
           ClientAliveInterval 180
-          #PasswordAuthentication yes
+          PasswordAuthentication yes
     - path: /etc/NetworkManager/conf.d/no-dns.conf
       mode: 0644
       contents:
