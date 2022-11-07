@@ -1,5 +1,8 @@
 variant: fcos
-version: 1.1.0
+version: 1.4.0
+kernel_arguments:
+  should_exist:
+    - selinux=0
 passwd:
   users:
     - name: lmr

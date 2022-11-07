@@ -1,6 +1,11 @@
 {
   "ignition": {
-    "version": "3.1.0"
+    "version": "3.3.0"
+  },
+  "kernelArguments": {
+    "shouldExist": [
+      "selinux=0"
+    ]
   },
   "passwd": {
     "users": [
@@ -26,46 +31,52 @@
   "storage": {
     "files": [
       {
+        "path": "/etc/hostname",
         "contents": {
+          "compression": "",
           "source": "data:,fcos%0A"
         },
-        "mode": 420,
-        "path": "/etc/hostname"
+        "mode": 420
       },
       {
+        "path": "/etc/sysctl.d/20-silence-audit.conf",
         "contents": {
+          "compression": "",
           "source": "data:,%23%20Raise%20console%20message%20logging%20level%20from%20DEBUG%20(7)%20to%20WARNING%20(4)%0A%23%20to%20hide%20audit%20messages%20from%20the%20interactive%20console%0Akernel.printk%3D4%0A"
         },
-        "mode": 420,
-        "path": "/etc/sysctl.d/20-silence-audit.conf"
+        "mode": 420
       },
       {
+        "path": "/etc/sysctl.d/90-ipv4-ip-forward.conf",
         "contents": {
+          "compression": "",
           "source": "data:,net.ipv4.ip_forward%20%3D%201%0A"
         },
-        "mode": 420,
-        "path": "/etc/sysctl.d/90-ipv4-ip-forward.conf"
+        "mode": 420
       },
       {
+        "path": "/etc/sysctl.d/90-ipv6-ip-forwarding.conf",
         "contents": {
+          "compression": "",
           "source": "data:,net.ipv6.conf.all.forwarding%20%3D%201%0A"
         },
-        "mode": 420,
-        "path": "/etc/sysctl.d/90-ipv6-ip-forwarding.conf"
+        "mode": 420
       },
       {
+        "path": "/etc/ssh/sshd_config.d/99-sshd.conf",
         "contents": {
+          "compression": "",
           "source": "data:,Port%201231%0AClientAliveInterval%20180%0APasswordAuthentication%20yes%0A"
         },
-        "mode": 420,
-        "path": "/etc/ssh/sshd_config.d/99-sshd.conf"
+        "mode": 420
       },
       {
+        "path": "/etc/NetworkManager/conf.d/no-dns.conf",
         "contents": {
+          "compression": "",
           "source": "data:,%5Bmain%5D%0Adns%3Dnone%0A"
         },
-        "mode": 420,
-        "path": "/etc/NetworkManager/conf.d/no-dns.conf"
+        "mode": 420
       }
     ],
     "links": [
