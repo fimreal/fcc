@@ -10,10 +10,6 @@
   "passwd": {
     "users": [
       {
-        "groups": [
-          "docker",
-          "sudo"
-        ],
         "homeDir": "/home/lmr",
         "name": "lmr",
         "passwordHash": "$y$j9T$avmZo2f7txYwPs3H02yTk/$3sXp/LMxj7.lTTGadKyu5qb8PJzdXhM44zYQIr3AyV4",
@@ -37,6 +33,14 @@
           "source": "data:,fcos%0A"
         },
         "mode": 420
+      },
+      {
+        "overwrite": true,
+        "path": "/etc/profile.d/zz-default-editor.sh",
+        "contents": {
+          "compression": "",
+          "source": "data:,export%20EDITOR%3Dvim%0A"
+        }
       },
       {
         "path": "/etc/sysctl.d/20-silence-audit.conf",
@@ -77,12 +81,29 @@
           "source": "data:,%5Bmain%5D%0Adns%3Dnone%0A"
         },
         "mode": 420
+      },
+      {
+        "path": "/etc/systemd/zram-generator.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,IyBUaGlzIGNvbmZpZyBmaWxlIGVuYWJsZXMgYSAvZGV2L3pyYW0wIGRldmljZSB3aXRoIHRoZSBkZWZhdWx0IHNldHRpbmdzClt6cmFtMF0K"
+        },
+        "mode": 420
       }
     ],
     "links": [
       {
         "path": "/etc/localtime",
         "target": "../usr/share/zoneinfo/Asia/Shanghai"
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Layer extensions with rpm-ostree\nWants=network-online.target\nAfter=network-online.target\n# We run before `zincati.service` to avoid conflicting rpm-ostree\n# transactions.\nBefore=zincati.service\nConditionPathExists=!/var/lib/%N.stamp\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\n# `--allow-inactive` ensures that rpm-ostree does not return an error\n# if the package is already installed. This is useful if the package is\n# added to the root image in a future Fedora CoreOS release as it will\n# prevent the service from failing.\nExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive vim vim wget iftop iotop lsyncd mtr nethogs nmap policycoreutils-python-utils python3 pip tcpdump ansible\nExecStart=/bin/touch /var/lib/%N.stamp\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "rpm-ostree-install-extensions.service"
       }
     ]
   }
