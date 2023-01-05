@@ -6,9 +6,9 @@ kernel_arguments:
 passwd:
   users:
     - name: lmr
-    # groups:
-    #   - docker
-    #   - sudo
+      groups:
+        - docker
+        - sudo
       password_hash: $y$j9T$avmZo2f7txYwPs3H02yTk/$3sXp/LMxj7.lTTGadKyu5qb8PJzdXhM44zYQIr3AyV4
       home_dir: /home/lmr
       shell: /bin/bash

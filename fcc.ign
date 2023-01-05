@@ -10,6 +10,10 @@
   "passwd": {
     "users": [
       {
+        "groups": [
+          "docker",
+          "sudo"
+        ],
         "homeDir": "/home/lmr",
         "name": "lmr",
         "passwordHash": "$y$j9T$avmZo2f7txYwPs3H02yTk/$3sXp/LMxj7.lTTGadKyu5qb8PJzdXhM44zYQIr3AyV4",
