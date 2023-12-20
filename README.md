@@ -6,7 +6,8 @@ Fedora CoreOS ignition config
 fcct -ps ignition.yaml -o fcc.ign
 # brew install butane
 # butane -ps ignition.yaml -o fcc.ign
-coreos-installer install </dev/devicename> --ignition-url https://raw.githubusercontent.com/fimreal/fcc/main/fcc.ign
+sudo coreos-installer install </dev/devicename> --ignition-url https://raw.githubusercontent.com/fimreal/fcc/main/fcc.ign
+# sudo coreos-installer install </dev/devicename> --ignition-url https://cfdown.2fw.top/https://raw.githubusercontent.com/fimreal/fcc/main/fcc.ign
 ```
 
 ## Online fcct tool
