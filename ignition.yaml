@@ -32,14 +32,50 @@ systemd:
         ConditionPathExists=!/var/lib/%N.stamp
 
         [Service]
+        EnvironmentFile=EXTENSIONS_BASIC="vim wget unzip"
+        EnvironmentFile=EXTENSIONS_INSP="nmap ipvsadm tcpdump htop iftop iotop"
+        EnvironmentFile=EXTENSIONS_ADV="argon2 davfs2"
+        # EnvironmentFile=EXTENSIONS_DEV="python3 golang sqlite3"
         Type=oneshot
         RemainAfterExit=yes
         # `--allow-inactive` ensures that rpm-ostree does not return an error
         # if the package is already installed. This is useful if the package is
         # added to the root image in a future Fedora CoreOS release as it will
         # prevent the service from failing.
-        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive vim vim wget iftop iotop lsyncd mtr nethogs nmap policycoreutils-python-utils python3 pip tcpdump ansible
         ExecStart=/bin/touch /var/lib/%N.stamp
+        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive $EXTENSIONS_BASIC $EXTENSIONS_INS $EXTENSIONS_ADV $EXTENSIONS_DEV
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: tailscaled.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=tailscale in container by podman, not quadlets
+        Wants=network-online.target
+        After=network-online.target
+        RequiresMountsFor=%t/containers
+
+        [Service]
+        Environment=PODMAN_SYSTEMD_UNIT=%n
+        Restart=always
+        TimeoutStopSec=15
+        Type=notify
+        NotifyAccess=all
+        ExecStartPre=/bin/mkdir -p /var/lib/tailscale /var/run/tailscale
+        ExecStart=/usr/bin/podman run \
+        -d \
+        --rm \
+        --name=tailscaled \
+        --network=host \
+        --privileged \
+        --log-driver=journald \
+        # --log-opt tag="{{.Name}}" \
+        -v /var/lib/tailscale:/var/lib/tailscale \
+        -v /var/run/tailscale:/var/run/tailscale \
+        -v /dev/net/tun:/dev/net/tun \
+        docker.io/tailscale/tailscale:latest \
+        tailscaled
 
         [Install]
         WantedBy=multi-user.target
@@ -59,9 +95,17 @@ storage:
       mode: 0644
       contents:
         inline: |
-          # Raise console message logging level from DEBUG (7) to WARNING (4)
+          # Raise console message logging level from DEBUG (7) to CRIT (2)
           # to hide audit messages from the interactive console
-          kernel.printk=4
+          # define KERN_EMERG           "<0>" /* system is unusable */
+          # define KERN_ALERT           "<1>" /* action must be taken   immediately */
+          # define KERN_CRIT            "<2>" /* critical conditions */
+          # define KERN_ERR             "<3>" /* error conditions */
+          # define KERN_WARNING         "<4>" /* warning conditions */
+          # define KERN_NOTICE          "<5>" /* normal but significantcondition */
+          # define KERN_INFO            "<6>" /* informational */
+          # define KERN_DEBUG           "<7>" /* debug-level messages */
+          kernel.printk=2
     - path: /etc/sysctl.d/90-ipv4-ip-forward.conf
       mode: 0644
       contents:
