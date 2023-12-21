@@ -32,10 +32,10 @@ systemd:
         ConditionPathExists=!/var/lib/%N.stamp
 
         [Service]
-        EnvironmentFile=EXTENSIONS_BASIC="vim wget unzip"
-        EnvironmentFile=EXTENSIONS_INSP="nmap ipvsadm tcpdump htop iftop iotop"
-        EnvironmentFile=EXTENSIONS_ADV="argon2 davfs2"
-        # EnvironmentFile=EXTENSIONS_DEV="python3 golang sqlite3"
+        Environment=EXTENSIONS_BASIC="vim wget unzip"
+        Environment=EXTENSIONS_INSP="nmap ipvsadm tcpdump htop iftop iotop"
+        Environment=EXTENSIONS_ADV="argon2 davfs2"
+        # Environment=EXTENSIONS_DEV="python3 golang sqlite3"
         Type=oneshot
         RemainAfterExit=yes
         # `--allow-inactive` ensures that rpm-ostree does not return an error
@@ -43,7 +43,7 @@ systemd:
         # added to the root image in a future Fedora CoreOS release as it will
         # prevent the service from failing.
         ExecStart=/bin/touch /var/lib/%N.stamp
-        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive $EXTENSIONS_BASIC $EXTENSIONS_INS $EXTENSIONS_ADV $EXTENSIONS_DEV
+        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive $EXTENSIONS_BASIC $EXTENSIONS_INSP $EXTENSIONS_ADV $EXTENSIONS_DEV
 
         [Install]
         WantedBy=multi-user.target
