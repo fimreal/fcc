@@ -63,6 +63,8 @@ systemd:
         Type=notify
         NotifyAccess=all
         ExecStartPre=/bin/mkdir -p /var/lib/tailscale /var/run/tailscale
+        ExecStartPre=-/usr/bin/podman rm -f tailscaled
+        ExecStop=/usr/bin/podman rm -f tailscaled
         ExecStart=/usr/bin/podman run \
         -d \
         --rm \

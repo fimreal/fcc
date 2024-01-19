@@ -110,7 +110,7 @@
         "name": "rpm-ostree-install-extensions.service"
       },
       {
-        "contents": "[Unit]\nDescription=tailscale in container by podman, not quadlets\nWants=network-online.target\nAfter=network-online.target\nRequiresMountsFor=%t/containers\n\n[Service]\nEnvironment=PODMAN_SYSTEMD_UNIT=%n\nRestart=always\nTimeoutStopSec=15\nType=notify\nNotifyAccess=all\nExecStartPre=/bin/mkdir -p /var/lib/tailscale /var/run/tailscale\nExecStart=/usr/bin/podman run \\\n-d \\\n--rm \\\n--name=tailscaled \\\n--network=host \\\n--privileged \\\n--log-driver=journald \\\n# --log-opt tag=\"{{.Name}}\" \\\n-v /var/lib/tailscale:/var/lib/tailscale \\\n-v /var/run/tailscale:/var/run/tailscale \\\n-v /dev/net/tun:/dev/net/tun \\\ndocker.io/tailscale/tailscale:latest \\\ntailscaled\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=tailscale in container by podman, not quadlets\nWants=network-online.target\nAfter=network-online.target\nRequiresMountsFor=%t/containers\n\n[Service]\nEnvironment=PODMAN_SYSTEMD_UNIT=%n\nRestart=always\nTimeoutStopSec=15\nType=notify\nNotifyAccess=all\nExecStartPre=/bin/mkdir -p /var/lib/tailscale /var/run/tailscale\nExecStartPre=-/usr/bin/podman rm -f tailscaled\nExecStop=/usr/bin/podman rm -f tailscaled\nExecStart=/usr/bin/podman run \\\n-d \\\n--rm \\\n--name=tailscaled \\\n--network=host \\\n--privileged \\\n--log-driver=journald \\\n# --log-opt tag=\"{{.Name}}\" \\\n-v /var/lib/tailscale:/var/lib/tailscale \\\n-v /var/run/tailscale:/var/run/tailscale \\\n-v /dev/net/tun:/dev/net/tun \\\ndocker.io/tailscale/tailscale:latest \\\ntailscaled\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": false,
         "name": "tailscaled.service"
       }
