@@ -35,6 +35,7 @@ systemd:
         Environment=EXTENSIONS_BASIC="vim wget unzip"
         Environment=EXTENSIONS_INSP="nmap ipvsadm tcpdump htop iftop iotop"
         Environment=EXTENSIONS_ADV="argon2 davfs2"
+        # Environment=EXTENSIONS_COCKPIT="cockpit-system cockpit-ostree cockpit-podman"
         # Environment=EXTENSIONS_DEV="python3 golang sqlite3"
         Type=oneshot
         RemainAfterExit=yes
@@ -43,7 +44,7 @@ systemd:
         # added to the root image in a future Fedora CoreOS release as it will
         # prevent the service from failing.
         ExecStart=/bin/touch /var/lib/%N.stamp
-        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive $EXTENSIONS_BASIC $EXTENSIONS_INSP $EXTENSIONS_ADV $EXTENSIONS_DEV
+        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive $EXTENSIONS_BASIC $EXTENSIONS_INSP $EXTENSIONS_ADV $EXTENSIONS_DEV $EXTENSIONS_COCKPIT
 
         [Install]
         WantedBy=multi-user.target
